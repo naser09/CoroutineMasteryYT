@@ -1,11 +1,9 @@
-package com.example.coroutinemastery
+package com.example.coroutinemastery.coroutine_practise
 
 import android.os.Build
 import android.os.FileObserver
 import android.util.Log
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.channels.sendBlocking
-import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import java.io.File

@@ -1,4 +1,4 @@
-package com.example.coroutinemastery
+package com.example.coroutinemastery.coroutine_practise
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

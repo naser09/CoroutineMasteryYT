@@ -1,4 +1,4 @@
-package com.example.coroutinemastery
+package com.example.coroutinemastery.coroutine_practise
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
@@ -9,17 +9,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.reduce
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -138,7 +134,7 @@ class UserApi{
     fun throwErr(){
         callback?.onApiError(Throwable("Test"))
     }
-    private var callback:GetUserCallback?=null
+    private var callback: GetUserCallback?=null
     fun register(callback: GetUserCallback){
         this.callback = callback
     }

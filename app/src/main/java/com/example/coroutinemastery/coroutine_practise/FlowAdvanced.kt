@@ -1,4 +1,4 @@
-package com.example.coroutinemastery
+package com.example.coroutinemastery.coroutine_practise
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose

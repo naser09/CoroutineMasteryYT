@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CoroutineMastery"
         tools:targetApi="31">
-        <service android:name=".FileCopyService" />
+        <service android:name=".coroutine_practise.FileCopyService" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
