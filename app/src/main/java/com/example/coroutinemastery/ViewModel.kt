@@ -73,6 +73,7 @@ class MyViewModel():ViewModel() {
     private fun copyFile(fileToCopy:File, pasteDirectory:File):Flow<Resource>{
         return flow {
             CopyOperation.copyFile(fileToCopy,pasteDirectory){
+                Log.d("Status",it.toString())
                 emit(Resource.Running(it))
             }
             emit(Resource.Success("${fileToCopy.name} Copied Successful"))
