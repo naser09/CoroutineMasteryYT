@@ -23,6 +23,9 @@ import java.io.File
 @Composable
 fun FileViewer(modifier: Modifier,viewModel: MyViewModel) {
     LazyColumn{
+        item {
+            RequestPermission()
+        }
         when(val status = viewModel.copyStatus.value){
             Resource.NotStarted -> {}
             is Resource.Running -> {

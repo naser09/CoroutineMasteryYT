@@ -4,7 +4,6 @@ import java.io.File
 
 object CopyOperation {
     suspend fun copyFile(fileToCopy:File, pasteDirectory:File, status:suspend (Status)->Unit){
-
             val input = fileToCopy.inputStream()
             val file = if (pasteDirectory.isDirectory){
                 File(pasteDirectory.absolutePath,fileToCopy.name)
