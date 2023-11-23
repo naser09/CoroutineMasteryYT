@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.coroutinemastery.CopyOperation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -36,7 +37,12 @@ class FileCopyService: Service(),CoroutineScope{
         startForeground(NOTIFICATION_ID, createNotification("Copying file", 0).build())
         launch {
             try {
-                copyFile(sourcePath, destinationPath)
+                //copyFile(sourcePath, destinationPath)
+                CopyOperation.copyFile(sourcePath,destinationPath) {
+                    updateNotification((it.progress*100).toInt())
+                }
+                updateNotification(100)
+                cancelNotification()
                 this@FileCopyService.stopForeground(STOP_FOREGROUND_DETACH)
 //                stopForeground(true)
                 stopSelf()
@@ -105,9 +111,9 @@ class FileCopyService: Service(),CoroutineScope{
                 .setSmallIcon(android.R.drawable.ic_menu_upload)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .setProgress(100, progress, false)
-        }
+    }
 
-        private fun updateNotification(progress: Int) {
+    private fun updateNotification(progress: Int) {
             val notification = createNotification("Copying file", progress)
             val notificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

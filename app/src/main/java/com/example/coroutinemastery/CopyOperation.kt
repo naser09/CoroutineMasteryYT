@@ -1,8 +1,10 @@
 package com.example.coroutinemastery
 
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import java.io.File
-import kotlin.random.Random
+import java.util.Timer
+import java.util.TimerTask
 
 object CopyOperation {
     suspend fun copyFile(fileToCopy:File, pasteDirectory:File, status:suspend (Status)->Unit){
@@ -16,14 +18,17 @@ object CopyOperation {
             val output = file.outputStream()
             input.use {
                 var copied = 0
+                var speed = 0
                 val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
                 var byte = it.read(buffer)
+
                 var beforeTime = System.currentTimeMillis()
-                var speed= 0
+
                 while (byte>=0){
                     output.write(buffer,0,byte)
                     byte = it.read(buffer)
                     copied+=byte
+
                     if (System.currentTimeMillis()-beforeTime>=1000){
                         status(
                             Status(

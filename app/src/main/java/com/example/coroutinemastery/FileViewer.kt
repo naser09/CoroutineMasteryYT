@@ -35,7 +35,13 @@ fun FileViewer(modifier: Modifier,viewModel: MyViewModel) {
                             .fillMaxWidth()
                             .height(20.dp),
                             progress = status.status?.progress?:0f, color = Color.Cyan)
-                        Text(text = "Transfer : ${status.status?.speed?:0} KB")
+                        status.status?.speed?.let {
+                            if (it>1024){
+                                Text(text = "Transfer : ${it/1024} MB")
+                            }else{
+                                Text(text = "Transfer : $it KB")
+                            }
+                        }
                     }
                 }
             }

@@ -1,6 +1,10 @@
 package com.example.coroutinemastery
 
+import android.content.ComponentName
+import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -26,13 +30,42 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
+import com.example.coroutinemastery.coroutine_practise.FileCopyService
 import com.example.coroutinemastery.ui.theme.CoroutineMasteryTheme
 
 class MainActivity : ComponentActivity() {
     private val viewModel:MyViewModel by viewModels()
+    //lateinit service
+    lateinit var copyService: CopyService
+    //is binded
+    private var isBinded = false
+    //make connection
+    private val connection = object :ServiceConnection{
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            val binder = service as CopyService.LocalBinder
+            copyService = binder.getService()
+            isBinded = true
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            isBinded = false
+        }
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unbindService(connection)
+    }
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //create intent
+        val intent = Intent(this,CopyService::class.java)
+        //start service
+        startForegroundService(intent)
+        //bind service
+        bindService(intent,connection, BIND_AUTO_CREATE)
         setContent {
             CoroutineMasteryTheme {
                 // A surface container using the 'background' color from the theme
@@ -78,11 +111,14 @@ class MainActivity : ComponentActivity() {
                         bottomBar = {
                             BottomBar(
                                 fileOpen = {
-                                         newFileDialog.value = true
+                                    viewModel.pasteFile()
                                 },
                                 fileCopy = { viewModel.setCopyFile() },
                                 fileDelete = { viewModel.deleteFile() }) { //paste
-                                viewModel.pasteFile()
+                                if (isBinded && viewModel.fileToCopy.value!=null){
+                                    copyService.copyFile(viewModel.fileToCopy.value!!,viewModel.currentDir.value)
+                                }
+                                //viewModel.pasteFile()
                             }
                     }) {
                         Box(modifier = Modifier.padding(it)){
